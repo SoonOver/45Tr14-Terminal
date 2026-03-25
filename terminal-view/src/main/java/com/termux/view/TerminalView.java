@@ -529,7 +529,7 @@ public final class TerminalView extends View {
 
     @Override
     public boolean isOpaque() {
-        return true;
+        return false;
     }
 
     /**
@@ -1010,6 +1010,8 @@ public final class TerminalView extends View {
         if (mEmulator == null) {
             canvas.drawColor(0XFF000000);
         } else {
+            // Semi-transparent black overlay for readability over anime wallpaper
+            canvas.drawColor(0xA0000000); 
             // render the terminal view and highlight any selected text
             int[] sel = mDefaultSelectors;
             if (mTextSelectionCursorController != null) {

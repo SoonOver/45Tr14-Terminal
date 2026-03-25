@@ -413,6 +413,8 @@ public final class ExtraKeysView extends GridLayout {
                 button.setTextColor(mButtonTextColor);
                 button.setAllCaps(mButtonTextAllCaps);
                 button.setPadding(0, 0, 0, 0);
+                button.setBackgroundResource(R.drawable.bg_extra_key_cute);
+                button.setBackgroundTintList(null);
 
                 button.setOnClickListener(view -> {
                     performExtraKeyButtonHapticFeedback(view, buttonInfo, button);
@@ -606,7 +608,8 @@ public final class ExtraKeysView extends GridLayout {
         button.setMinimumHeight(0);
         button.setWidth(width);
         button.setHeight(height);
-        button.setBackgroundColor(mButtonActiveBackgroundColor);
+        button.setBackgroundResource(R.drawable.bg_extra_key_cute);
+        button.setBackgroundTintList(null);
         mPopupWindow = new PopupWindow(this);
         mPopupWindow.setWidth(LayoutParams.WRAP_CONTENT);
         mPopupWindow.setHeight(LayoutParams.WRAP_CONTENT);

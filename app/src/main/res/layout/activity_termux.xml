@@ -16,6 +16,15 @@
         android:layout_marginVertical="0dp"
         android:orientation="vertical">
 
+        <!-- Removed missing drawable/bg_anime -->
+        <!--
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/bg_anime"
+            android:scaleType="centerCrop" />
+        -->
+
         <androidx.drawerlayout.widget.DrawerLayout
             android:id="@+id/drawer_layout"
             android:layout_width="match_parent"

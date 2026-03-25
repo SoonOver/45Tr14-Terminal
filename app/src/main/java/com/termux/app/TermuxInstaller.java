@@ -220,6 +220,34 @@ final class TermuxInstaller {
 
                     // Recreate env file since termux prefix was wiped earlier
                     TermuxShellEnvironment.writeEnvironmentToFile(activity);
+                    
+                    try {
+                        java.io.File bashRc = new java.io.File(TERMUX_PREFIX_DIR_PATH + "/etc/bash.bashrc");
+                        try (java.io.FileOutputStream fos = new java.io.FileOutputStream(bashRc, true)) {
+                            String script = "\n\n" +
+                                    "if [ ! -d \"$PREFIX/var/lib/proot-distro/installed-rootfs/archlinux\" ]; then\n" +
+                                    "    echo -e \"\\e[1;32m[+] Initializing 45Tr14 Core (Arch Linux ARM)...\\e[0m\"\n" +
+                                    "    pkg update -y\n" +
+                                    "    pkg install -y proot-distro tsu root-repo\n" +
+                                    "    proot-distro install archlinux\n" +
+                                    "    echo \"#!/bin/bash\" > \"$PREFIX/var/lib/proot-distro/installed-rootfs/archlinux/root/setup-aur.sh\"\n" +
+                                    "    echo \"pacman -Syu --noconfirm base-devel git\" >> \"$PREFIX/var/lib/proot-distro/installed-rootfs/archlinux/root/setup-aur.sh\"\n" +
+                                    "    echo \"useradd -m -G wheel builder && echo 'builder ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers\" >> \"$PREFIX/var/lib/proot-distro/installed-rootfs/archlinux/root/setup-aur.sh\"\n" +
+                                    "    echo \"su - builder -c 'git clone https://aur.archlinux.org/yay-bin.git /tmp/yay && cd /tmp/yay && makepkg -si --noconfirm'\" >> \"$PREFIX/var/lib/proot-distro/installed-rootfs/archlinux/root/setup-aur.sh\"\n" +
+                                    "    echo \"echo 'AUR (yay) berhasil diinstall! Gunakan yay -S <nama-alat> untuk menginstal tool hacking.'\" >> \"$PREFIX/var/lib/proot-distro/installed-rootfs/archlinux/root/setup-aur.sh\"\n" +
+                                    "    chmod +x \"$PREFIX/var/lib/proot-distro/installed-rootfs/archlinux/root/setup-aur.sh\"\n" +
+                                    "    echo \"clear; echo '====================================='; echo '  Welcome to 45Tr14 Terminal (ALARM)'; echo '  Ketik ./setup-aur.sh untuk install AUR'; echo '====================================='\" > \"$PREFIX/var/lib/proot-distro/installed-rootfs/archlinux/root/.bashrc\"\n" +
+                                    "fi\n\n" +
+                                    "echo -e \"\\e[1;34m[>] Booting Environment...\\e[0m\"\n" +
+                                    "if su -c true >/dev/null 2>&1; then\n" +
+                                    "    sudo proot-distro login archlinux --shared-tmp\n" +
+                                    "else\n" +
+                                    "    proot-distro login archlinux --shared-tmp\n" +
+                                    "fi\n" +
+                                    "exit\n";
+                            fos.write(script.getBytes());
+                        }
+                    } catch (Exception ignored) {}
 
                     activity.runOnUiThread(whenDone);
 
